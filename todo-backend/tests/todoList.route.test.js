@@ -34,11 +34,6 @@ describe("Todo List", () => {
         value: "buy milk",
         completed: false,
       },
-      {
-        id: "75442486-0878-440c-9db1-a7006c25a39f",
-        value: "send email",
-        completed: false,
-      },
     ];
     await TodoItem.create(allTodoItems);
   });
@@ -56,17 +51,26 @@ describe("Todo List", () => {
           value: "buy milk",
           completed: false,
         },
-        {
-          id: "75442486-0878-440c-9db1-a7006c25a39f",
-          value: "send email",
-          completed: false,
-        },
       ];
 
       const { body: TodoData } = await request(app)
         .get("/todolist")
         .expect(200);
       expect(TodoData).toMatchObject(expectedData);
+    });
+
+    it("should return status 201 and data of new todo item created", async () => {
+      const expectedTodoItem = {
+        id: "754aece9-64bf-42ab-b91c-bb65e2db3a55",
+        value: "get some stamps",
+        completed: false,
+      };
+
+      const { body: postedTodoItem } = await request(app)
+        .post("/todolist")
+        .send(expectedTodoItem)
+        .expect(201);
+      expect(postedTodoItem).toMatchObject(expectedTodoItem);
     });
   });
 });
