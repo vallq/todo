@@ -28,11 +28,16 @@ describe("Todo List", () => {
   });
 
   beforeEach(async () => {
-    const allTodoItems = [
+    let allTodoItems = [
       {
         id: "754aece9-64bf-42ab-b91c-bb65e2db3a37",
         value: "buy milk",
         completed: false,
+      },
+      {
+        id: "754aece9-64bf-42ab-b91c-bb65e2db3a55",
+        value: "bake cookies",
+        completed: true,
       },
     ];
     await TodoItem.create(allTodoItems);
@@ -50,6 +55,11 @@ describe("Todo List", () => {
           id: "754aece9-64bf-42ab-b91c-bb65e2db3a37",
           value: "buy milk",
           completed: false,
+        },
+        {
+          id: "754aece9-64bf-42ab-b91c-bb65e2db3a55",
+          value: "bake cookies",
+          completed: true,
         },
       ];
 
@@ -122,6 +132,14 @@ describe("Todo List", () => {
         .delete(`/todolist/${expectedTodoItem.id}`)
         .expect(200);
       expect(deletedTodoItem).toMatchObject(expectedTodoItem);
+    });
+    
+    it("DELETE should return status 200 and return number of todo items that have been deleted", async () => {
+      const expectedData = { ok: 1, deletedCount: 1, n: 1 };
+      const { body: deletedCount } = await request(app)
+        .delete("/todolist")
+        .expect(200);
+      expect(deletedCount).toMatchObject(expectedData);
     });
   });
 });
