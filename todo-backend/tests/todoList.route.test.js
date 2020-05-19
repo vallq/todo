@@ -133,7 +133,7 @@ describe("Todo List", () => {
         .expect(200);
       expect(deletedTodoItem).toMatchObject(expectedTodoItem);
     });
-    
+
     it("DELETE should return status 200 and return number of todo items that have been deleted", async () => {
       const expectedData = { ok: 1, deletedCount: 1, n: 1 };
       const { body: deletedCount } = await request(app)

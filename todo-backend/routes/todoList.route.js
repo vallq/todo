@@ -39,10 +39,17 @@ const deleteTodoItem = async (req, res) => {
   res.status(200).send(deletedItem);
 };
 
+const clearCompletedTodoItems = async (req, res) => {
+  const filterCompleted = { completed: true };
+  const deleteManyResponse = await TodoItem.deleteMany({ completed: true });
+  res.status(200).send(deleteManyResponse);
+};
+
 router.get("/", getAllTodoItems);
 router.post("/", postNewTodoItem);
 router.patch("/:id", updateTodoItem);
 router.delete("/:id", deleteTodoItem);
+router.delete("/", clearCompletedTodoItems);
 
 router.use((err, req, res, next) => {
   next(err);
