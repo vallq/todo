@@ -9,7 +9,7 @@ const getAllTodoItems = async (req, res) => {
     "id value completed"
   );
   res.status(200).send(todoList);
-}
+};
 
 const postNewTodoItem = async (req, res) => {
   try {
@@ -21,10 +21,21 @@ const postNewTodoItem = async (req, res) => {
     err.statusCode = 400;
     next(err);
   }
-}
+};
 
-router.get("/",getAllTodoItems);
+const updateTodoItem = async (req, res) => {
+  const dataToUpdate = req.body;
+  const updatedItem = await TodoItem.findOneAndUpdate(
+    { id: req.params.id },
+    dataToUpdate,
+    { new: true }
+  );
+  res.status(200).send(updatedItem);
+};
+
+router.get("/", getAllTodoItems);
 router.post("/", postNewTodoItem);
+router.patch("/:id", updateTodoItem);
 
 router.use((err, req, res, next) => {
   next(err);
