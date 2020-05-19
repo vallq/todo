@@ -59,7 +59,7 @@ describe("Todo List", () => {
       expect(TodoData).toMatchObject(expectedData);
     });
 
-    it("should return status 201 and data of new todo item created", async () => {
+    it("POST should return status 201 and data of new todo item created", async () => {
       const expectedTodoItem = {
         id: "754aece9-64bf-42ab-b91c-bb65e2db3a55",
         value: "get some stamps",
@@ -71,6 +71,25 @@ describe("Todo List", () => {
         .send(expectedTodoItem)
         .expect(201);
       expect(postedTodoItem).toMatchObject(expectedTodoItem);
+    });
+
+    it("PATCH should return status 200 and data of updated todo item", async () => {
+      const expectedTodoItem = {
+        id: "754aece9-64bf-42ab-b91c-bb65e2db3a37",
+        value: "buy milk",
+        completed: true,
+      };
+
+      const propertyToPatch = {
+        id: "754aece9-64bf-42ab-b91c-bb65e2db3a37",
+        completed: true,
+      };
+
+      const { body: patchedTodoItem } = await request(app)
+        .patch(`/todolist/${propertyToPatch.id}`)
+        .send(propertyToPatch)
+        .expect(200);
+      expect(patchedTodoItem).toMatchObject(expectedTodoItem);
     });
   });
 });
