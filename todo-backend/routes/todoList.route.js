@@ -33,9 +33,16 @@ const updateTodoItem = async (req, res) => {
   res.status(200).send(updatedItem);
 };
 
+const deleteTodoItem = async (req, res) => {
+  const todoItemId = req.params.id;
+  const deletedItem = await TodoItem.findOneAndDelete({ id: todoItemId });
+  res.status(200).send(deletedItem);
+};
+
 router.get("/", getAllTodoItems);
 router.post("/", postNewTodoItem);
 router.patch("/:id", updateTodoItem);
+router.delete("/:id", deleteTodoItem);
 
 router.use((err, req, res, next) => {
   next(err);
