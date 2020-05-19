@@ -73,7 +73,7 @@ describe("Todo List", () => {
       expect(postedTodoItem).toMatchObject(expectedTodoItem);
     });
 
-    it("PATCH should return status 200 and data of updated todo item", async () => {
+    it("PATCH should return status 200 and updated status of todo item", async () => {
       const expectedTodoItem = {
         id: "754aece9-64bf-42ab-b91c-bb65e2db3a37",
         value: "buy milk",
@@ -90,6 +90,38 @@ describe("Todo List", () => {
         .send(propertyToPatch)
         .expect(200);
       expect(patchedTodoItem).toMatchObject(expectedTodoItem);
+    });
+
+    it("PATCH should return status 200 and updated value of todo item", async () => {
+      const expectedTodoItem = {
+        id: "754aece9-64bf-42ab-b91c-bb65e2db3a37",
+        value: "buy apples",
+        completed: false,
+      };
+
+      const propertyToPatch = {
+        id: "754aece9-64bf-42ab-b91c-bb65e2db3a37",
+        value: "buy apples",
+      };
+
+      const { body: patchedTodoItem } = await request(app)
+        .patch(`/todolist/${propertyToPatch.id}`)
+        .send(propertyToPatch)
+        .expect(200);
+      expect(patchedTodoItem).toMatchObject(expectedTodoItem);
+    });
+
+    it("DELETE should return status 200 and return todo item that has been deleted", async () => {
+      const expectedTodoItem = {
+        id: "754aece9-64bf-42ab-b91c-bb65e2db3a37",
+        value: "buy milk",
+        completed: false,
+      };
+
+      const { body: deletedTodoItem } = await request(app)
+        .delete(`/todolist/${expectedTodoItem.id}`)
+        .expect(200);
+      expect(deletedTodoItem).toMatchObject(expectedTodoItem);
     });
   });
 });
