@@ -3,7 +3,7 @@ import logo from "./todo.svg";
 import "./App.css";
 import TodoItem from "./components/TodoItem";
 import axios from "axios";
-import generateUuid from "./utils/uuid"
+import generateUuid from "./utils/uuid";
 
 const API = "http://localhost:3001/todolist";
 const ENTER_KEY = 13;
@@ -66,7 +66,7 @@ class App extends React.Component {
   getTodos = async () => {
     const { data } = await axios.get(API);
     this.updateTodoList(data);
-  }
+  };
 
   toggleAll = (event) => {
     //var checked = event.target.checked;
@@ -85,8 +85,20 @@ class App extends React.Component {
     this.setState({ editing: todo.id });
   };
 
-  save = (todo, text) => {
-    //this.props.save(todo, text);
+  save = async (todo, text) => {
+    const updatedValue = { value: text };
+    const todoItemId = "/" + this.state.editing;
+    const response = await axios.patch(API.concat(todoItemId), updatedValue);
+    const currentTodoItems = this.state.todoItems;
+    const updatedTodoItems = currentTodoItems.map((todo) => {
+      if (todo.id === response.id) {
+        return response;
+      } else {
+        return todo;
+      }
+    });
+    console.log(response);
+    this.updateTodoList(updatedTodoItems);
     this.setState({ editing: null });
   };
 
@@ -100,7 +112,7 @@ class App extends React.Component {
 
   componentDidMount = () => {
     this.getTodos();
-  }
+  };
 
   render() {
     let footer;
@@ -133,9 +145,9 @@ class App extends React.Component {
       );
     });
 
-    // let activeTodoCount = todos.reduce((accum, todo) => {
-    //   return todo.completed ? accum : accum + 1;
-    // }, 0);
+    let activeTodoCount = todos.reduce((accum, todo) => {
+      return todo.completed ? accum : accum + 1;
+    }, 0);
 
     //let completedCount = todos.length - activeTodoCount;
 
@@ -157,9 +169,16 @@ class App extends React.Component {
     if (todos.length) {
       main = (
         <section className="main">
+          <input
+            id="toggle-all"
+            className="toggle-all"
+            type="checkbox"
+            onChange={this.toggleAll}
+            checked={activeTodoCount === 0}
+          />
           <ul className="todolist">{todoItems}</ul>
         </section>
-      )
+      );
     }
 
     return (
