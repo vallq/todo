@@ -3,7 +3,7 @@ import logo from "./todo.svg";
 import "./App.css";
 //import TodoItem from "./components/TodoItem";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
+import generateUuid from "./utils/uuid"
 
 const API = "http://localhost:3001/todolist";
 const ENTER_KEY = 13;
@@ -28,7 +28,7 @@ class App extends React.Component {
 
   createTodoObject = () => {
     const todoObject = {
-      id: uuidv4(),
+      id: generateUuid(),
       value: this.state.newTodo,
       completed: false,
     };
