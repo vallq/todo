@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./todo.svg";
 import "./App.css";
-//import TodoItem from "./components/TodoItem";
+import TodoItem from "./components/TodoItem";
 import axios from "axios";
 import generateUuid from "./utils/uuid"
 
@@ -63,6 +63,11 @@ class App extends React.Component {
     }
   };
 
+  getTodos = async () => {
+    const { data } = await axios.get(API);
+    this.updateTodoList(data);
+  }
+
   toggleAll = (event) => {
     //var checked = event.target.checked;
     //this.props.toggleAll(checked);
@@ -93,36 +98,40 @@ class App extends React.Component {
     //this.props.clearCompleted;
   };
 
+  componentDidMount = () => {
+    this.getTodos();
+  }
+
   render() {
     let footer;
     let main;
-    //let todos = this.state.todoItems;
+    let todos = this.state.todoItems;
 
-    // let shownTodos = todos.filter((todo) => {
-    //   switch (this.state.nowShowing) {
-    //     case ACTIVE_TODOS:
-    //       return !todo.completed;
-    //     case COMPLETED_TODOS:
-    //       return todo.completed;
-    //     default:
-    //       return true;
-    //   }
-    // });
+    let shownTodos = todos.filter((todo) => {
+      switch (this.state.nowShowing) {
+        // case ACTIVE_TODOS:
+        //   return !todo.completed;
+        // case COMPLETED_TODOS:
+        //   return todo.completed;
+        default:
+          return true;
+      }
+    });
 
-    // let todoItems = shownTodos.map((todo) => {
-    //   return (
-    //     <TodoItem
-    //       key={todo.id}
-    //       todo={todo}
-    //       onToggle={this.toggle.bind(this, todo)}
-    //       onDestroy={this.destroy.bind(this, todo)}
-    //       onEdit={this.edit.bind(this, todo)}
-    //       editing={this.state.editing === todo.id}
-    //       onSave={this.save.bind(this, todo)}
-    //       onCancel={this.cancel}
-    //     />
-    //   );
-    // });
+    let todoItems = shownTodos.map((todo) => {
+      return (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={this.toggle.bind(this, todo)}
+          onDestroy={this.destroy.bind(this, todo)}
+          onEdit={this.edit.bind(this, todo)}
+          editing={this.state.editing === todo.id}
+          onSave={this.save.bind(this, todo)}
+          onCancel={this.cancel}
+        />
+      );
+    });
 
     // let activeTodoCount = todos.reduce((accum, todo) => {
     //   return todo.completed ? accum : accum + 1;
@@ -145,6 +154,13 @@ class App extends React.Component {
     //     </section>
     //   );
     // }
+    if (todos.length) {
+      main = (
+        <section className="main">
+          <ul className="todolist">{todoItems}</ul>
+        </section>
+      )
+    }
 
     return (
       <div className="App">
