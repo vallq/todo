@@ -1,8 +1,10 @@
 const express = require("express");
-const app = express();
 const apiEndpoints = require("./apiEndpoints");
 const todoListRouter = require("./routes/todoList.route");
+const cors = require('cors');
+const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use("/todolist", todoListRouter);
 
