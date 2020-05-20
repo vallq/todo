@@ -37,11 +37,10 @@ class App extends React.Component {
 
   addTodo = async () => {
     const todoToAdd = this.createTodoObject();
-    console.log(todoToAdd);
-    const response = await axios.post(API, todoToAdd);
     const currentTodoItems = this.state.todoItems;
-    currentTodoItems.push(response);
+    currentTodoItems.push(todoToAdd);
     this.updateTodoList(currentTodoItems);
+    await axios.post(API, todoToAdd);
   };
 
   updateTodoList = (updatedList) => {
@@ -77,8 +76,14 @@ class App extends React.Component {
     //this.props.toggle(todo);
   };
 
-  destroy = (todo) => {
-    //this.props.destroy(todo);
+  destroy = async (todo) => {
+    const targetId = todo.id;
+    const todoItemId = "/" + targetId;
+    const currentTodoItems = this.state.todoItems;
+    const targetIndex = currentTodoItems.indexOf(todo);
+    currentTodoItems.splice(targetIndex, 1);
+    this.updateTodoList(currentTodoItems);
+    await axios.delete(API.concat(todoItemId));
   };
 
   edit = (todo) => {
@@ -87,7 +92,7 @@ class App extends React.Component {
 
   save = async (todo, text) => {
     const updatedValue = { value: text };
-    const todoItemId = "/" + this.state.editing;
+    const todoItemId = "/" + todo.id;
     const response = await axios.patch(API.concat(todoItemId), updatedValue);
     const currentTodoItems = this.state.todoItems;
     const updatedTodoItems = currentTodoItems.map((todo) => {
@@ -113,10 +118,6 @@ class App extends React.Component {
   componentDidMount = () => {
     this.getTodos();
   };
-
-  componentDidUpdate = () => {
-    this.getTodos();
-  }
 
   render() {
     let footer;
