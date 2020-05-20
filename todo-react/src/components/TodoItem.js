@@ -1,4 +1,5 @@
 import React from "react";
+import "./TodoItem.css";
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
@@ -9,14 +10,13 @@ class TodoItem extends React.Component {
     this.state = {
       editText: "",
     };
-    
   }
 
   handleChange = (event) => {
     if (this.props.editing) {
-      this.setState({editText: event.target.value});
+      this.setState({ editText: event.target.value });
     }
-  }
+  };
 
   handleSubmit = (event) => {
     const val = this.state.editText.trim();
@@ -56,10 +56,15 @@ class TodoItem extends React.Component {
             checked={this.props.todo.completed}
             onChange={this.props.onToggle}
           />
-          <label onDoubleClick={this.handleEdit} style={{background: "blue"}}>{this.props.todo.value}</label>
+          <label
+            className={this.props.editing ? "hidden" : ""}
+            onDoubleClick={this.handleEdit}
+          >
+            {this.props.todo.value}
+          </label>
           <button className="destroy" onClick={this.props.onDestroy} />
           <input
-            className="edit"
+            className={this.props.editing ? "" : "hidden"}
             value={this.state.editText}
             onBlur={this.handleSubmit}
             onChange={this.handleChange}
