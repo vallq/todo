@@ -22,7 +22,7 @@ class TodoItem extends React.Component {
     const val = this.state.editText.trim();
     if (val) {
       this.props.onSave(val);
-      this.setState({ editText: val });
+      this.setState({ editText: "" });
     } else {
       //this.props.onDestroy();
     }
@@ -59,7 +59,6 @@ class TodoItem extends React.Component {
           <label onDoubleClick={this.handleEdit} style={{background: "blue"}}>{this.props.todo.value}</label>
           <button className="destroy" onClick={this.props.onDestroy} />
           <input
-            ref={this.props.editFieldRef}
             className="edit"
             value={this.state.editText}
             onBlur={this.handleSubmit}

@@ -114,6 +114,10 @@ class App extends React.Component {
     this.getTodos();
   };
 
+  componentDidUpdate = () => {
+    this.getTodos();
+  }
+
   render() {
     let footer;
     let main;
