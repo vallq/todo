@@ -72,8 +72,20 @@ class App extends React.Component {
     //this.props.toggleAll(checked);
   };
 
-  toggle = (todo) => {
-    //this.props.toggle(todo);
+  toggle = async (todo) => {
+    const updatedValue = { completed: !todo.completed };
+    console.log(updatedValue);
+    const todoItemId = "/" + todo.id;
+    const { data } = await axios.patch(API.concat(todoItemId), updatedValue);
+    const currentTodoItems = this.state.todoItems;
+    const updatedTodoItems = currentTodoItems.map((todo) => {
+      if (todo.id === data.id) {
+        return data;
+      } else {
+        return todo;
+      }
+    });
+    this.updateTodoList(updatedTodoItems);
   };
 
   destroy = async (todo) => {
@@ -93,16 +105,15 @@ class App extends React.Component {
   save = async (todo, text) => {
     const updatedValue = { value: text };
     const todoItemId = "/" + todo.id;
-    const response = await axios.patch(API.concat(todoItemId), updatedValue);
+    const { data } = await axios.patch(API.concat(todoItemId), updatedValue);
     const currentTodoItems = this.state.todoItems;
     const updatedTodoItems = currentTodoItems.map((todo) => {
-      if (todo.id === response.id) {
-        return response;
+      if (todo.id === data.id) {
+        return data;
       } else {
         return todo;
       }
     });
-    console.log(response);
     this.updateTodoList(updatedTodoItems);
     this.setState({ editing: null });
   };

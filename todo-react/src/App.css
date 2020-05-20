@@ -40,6 +40,8 @@
 .todolist {
   border: 2px solid #151618;
   text-align: left;
+  width: 40%;
+  margin: auto;
 }
 
 ul {
