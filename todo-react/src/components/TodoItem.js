@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import "./TodoItem.css";
 
 const ESCAPE_KEY = 27;
@@ -62,7 +64,7 @@ class TodoItem extends React.Component {
           >
             {this.props.todo.value}
           </label>
-          <button className="destroy" onClick={this.props.onDestroy} />
+          <FontAwesomeIcon icon={faTimesCircle} onClick={this.props.onDestroy} />
           <input
             className={this.props.editing ? "" : "hidden"}
             value={this.state.editText}
