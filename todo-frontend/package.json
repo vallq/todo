@@ -1,4 +1,4 @@
-{ 
+{
   "private": true,
   "dependencies": {
     "classnames": "^2.1.5",
