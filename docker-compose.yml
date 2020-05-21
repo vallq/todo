@@ -1,0 +1,34 @@
+version: "3"
+services:
+    client:
+        build: ./todo-react
+        restart: always
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./todo-react/src:/app/todo-react/src
+            - /todo-react/node_modules
+            - ./todo-react/public:/app/todo-react/public
+        links:
+            - server
+
+    server:
+        build: ./todo-backend
+        restart: always
+        ports:
+            - "3001:3001"
+        volumes:
+            - ./todo-backend/src:/app/todo-backend/src
+            - /todo-backend/node_modules
+        depends_on:
+            - mongodb
+
+    mongodb:
+        image: mongo
+        restart: always
+        container_name: mongodb
+        volumes:
+            - ./data-node:/data/db
+        ports:
+            - 27017:27017
+        command: mongod --noauth --smallfiles
