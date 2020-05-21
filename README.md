@@ -14,7 +14,7 @@ Frontend: [TodoMVC React](http://todomvc.com/)
 
 ### Todo React App
 
-![todo-react demo](./todo-react\public\todo-demo.gif)
+![todo-react demo](https://raw.githubusercontent.com/vallq/todo/master/todo-react/public/todo-demo.gif)
 
 This todo project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
