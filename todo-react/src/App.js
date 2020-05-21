@@ -2,14 +2,15 @@ import React from "react";
 import logo from "./todo.svg";
 import "./App.css";
 import TodoItem from "./components/TodoItem";
+import TodoFooter from "./components/TodoFooter";
 import axios from "axios";
-import generateUuid from "./utils/uuid";
+import { generateUuid } from "./utils/utils";
 
 const API = "http://localhost:3001/todolist";
 const ENTER_KEY = 13;
 const ALL_TODOS = "all";
-//const ACITVE_TODOS = "active";
-//const COMPLETED_TODOS = "completed";
+const ACTIVE_TODOS = "active";
+const COMPLETED_TODOS = "completed";
 
 class App extends React.Component {
   constructor() {
@@ -177,10 +178,10 @@ class App extends React.Component {
 
     let shownTodos = todos.filter((todo) => {
       switch (this.state.nowShowing) {
-        // case ACTIVE_TODOS:
-        //   return !todo.completed;
-        // case COMPLETED_TODOS:
-        //   return todo.completed;
+        case ACTIVE_TODOS:
+          return !todo.completed;
+        case COMPLETED_TODOS:
+          return todo.completed;
         default:
           return true;
       }
@@ -205,23 +206,18 @@ class App extends React.Component {
       return todo.completed ? accum : accum + 1;
     }, 0);
 
-    //let completedCount = todos.length - activeTodoCount;
+    let completedCount = todos.length - activeTodoCount;
+    if (activeTodoCount || completedCount) {
+      footer = (
+        <TodoFooter
+          count={activeTodoCount}
+          completedCount={completedCount}
+          nowShowing={this.state.nowShowing}
+          onClearCompleted={this.clearCompleted}
+        />
+      );
+    }
 
-    // if (todos.length) {
-    //   main = (
-    //     <section className="main">
-    //       <input
-    //         id="toggle-all"
-    //         className="toggle-all"
-    //         type="checkbox"
-    //         onChange={this.toggleAll}
-    //         checked={activeTodoCount === 0}
-    //       />
-    //       <label htmlFor="toggle-all" />
-    //       <ul className="todo-list">{todoItems}</ul>
-    //     </section>
-    //   );
-    // }
     if (todos.length) {
       main = (
         <section className="main">
@@ -232,6 +228,7 @@ class App extends React.Component {
             onChange={this.toggleAll}
             checked={activeTodoCount === 0}
           />
+          <label htmlFor="toggle-all" />
           <ul className="todolist">{todoItems}</ul>
         </section>
       );
