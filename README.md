@@ -42,7 +42,9 @@ It correctly bundles React in production mode and optimizes the build for the be
 5. Delete all todo items (DELETE/todolist)
 
 #### `npm install`
+
 Run this to get all dependencies
 
 #### `npm run start:dev`
+
 Run this to start the mongodb server with nodemon so that changes to the files will refresh the server accordingly
