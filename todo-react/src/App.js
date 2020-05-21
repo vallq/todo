@@ -19,6 +19,7 @@ class App extends React.Component {
       editing: null,
       todoItems: [],
       nowShowing: ALL_TODOS,
+      allChecked: null,
     };
   }
 
@@ -67,14 +68,47 @@ class App extends React.Component {
     this.updateTodoList(data);
   };
 
+  checkAllChecked = () => {
+    let currentTodoItems = this.state.todoItems;
+    let activeItems = currentTodoItems.filter((todo) => {
+      return todo.completed === false;
+    });
+    if (activeItems > 0) {
+      this.setState({ allChecked: false });
+    } else if (activeItems === 0) {
+      this.setState({ allChecked: true });
+    }
+  };
+
   toggleAll = (event) => {
-    //var checked = event.target.checked;
-    //this.props.toggleAll(checked);
+    let currentTodoItems = this.state.todoItems;
+    if (this.state.allChecked) {
+      currentTodoItems = currentTodoItems.map((todo) => {
+        const todoItemId = "/" + todo.id;
+        axios.patch(API.concat(todoItemId), {
+          completed: false,
+        });
+        todo.completed = false;
+        return todo;
+      });
+      this.updateTodoList(currentTodoItems);
+      this.setState({ allChecked: false });
+    } else {
+      currentTodoItems = currentTodoItems.map((todo) => {
+        const todoItemId = "/" + todo.id;
+        axios.patch(API.concat(todoItemId), {
+          completed: true,
+        });
+        todo.completed = true;
+        return todo;
+      });
+      this.updateTodoList(currentTodoItems);
+      this.setState({ allChecked: true });
+    }
   };
 
   toggle = async (todo) => {
     const updatedValue = { completed: !todo.completed };
-    console.log(updatedValue);
     const todoItemId = "/" + todo.id;
     const { data } = await axios.patch(API.concat(todoItemId), updatedValue);
     const currentTodoItems = this.state.todoItems;
@@ -122,12 +156,18 @@ class App extends React.Component {
     this.setState({ editing: null });
   };
 
-  clearCompleted = () => {
-    //this.props.clearCompleted;
+  clearCompleted = async () => {
+    await axios.delete(API);
+    let currentTodoItems = this.state.todoItems;
+    currentTodoItems = currentTodoItems.filter((todo) => {
+      return !todo.completed;
+    });
+    this.updateTodoList(currentTodoItems);
   };
 
   componentDidMount = () => {
     this.getTodos();
+    this.checkAllChecked();
   };
 
   render() {
