@@ -166,6 +166,10 @@ class App extends React.Component {
     this.updateTodoList(currentTodoItems);
   };
 
+  setNowShowing = (state) => {
+    this.setState({ nowShowing: state });
+  };
+
   componentDidMount = () => {
     this.getTodos();
     this.checkAllChecked();
@@ -212,7 +216,7 @@ class App extends React.Component {
         <TodoFooter
           count={activeTodoCount}
           completedCount={completedCount}
-          nowShowing={this.state.nowShowing}
+          setNowShowing={this.setNowShowing.bind(this)}
           onClearCompleted={this.clearCompleted}
         />
       );
@@ -228,6 +232,7 @@ class App extends React.Component {
             onChange={this.toggleAll}
             checked={activeTodoCount === 0}
           />
+          {"toggle all"}
           <label htmlFor="toggle-all" />
           <ul className="todolist">{todoItems}</ul>
         </section>
@@ -238,31 +243,19 @@ class App extends React.Component {
       <div className="App">
         <div>
           <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>
-              Icons made by{" "}
-              <a
-                href="https://www.flaticon.com/authors/kiranshastry"
-                title="Kiranshastry"
-              >
-                Kiranshastry
-              </a>{" "}
-              from{" "}
-              <a href="https://www.flaticon.com/" title="Flaticon">
-                {" "}
-                www.flaticon.com
-              </a>
-            </p>
-            <h1>todos</h1>
-            <input
-              className="new-todo"
-              placeholder="What needs to be done?"
-              value={this.state.newTodo}
-              onKeyDown={this.handleNewTodoKeyDown}
-              onChange={this.handleChange}
-              autoFocus={true}
-            />
+            <h1>
+              <img src={logo} className="App-logo" alt="logo" />
+              todos
+            </h1>
           </header>
+          <input
+            className="new-todo"
+            placeholder="What needs to be done?"
+            value={this.state.newTodo}
+            onKeyDown={this.handleNewTodoKeyDown}
+            onChange={this.handleChange}
+            autoFocus={true}
+          />
           {main}
           {footer}
         </div>

@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  height: 10vmin;
+  height: 8vmin;
   pointer-events: none;
 }
 
@@ -15,7 +15,7 @@
 
 .App-header {
   /*background-color: #282c34;*/
-  min-height: 15vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,9 +38,10 @@
 }
 
 .todolist {
-  border: 2px solid #151618;
+  background-color: rgb(77, 206, 195);
+  padding: 2em 0em 2em 4em;
   text-align: left;
-  width: 40%;
+  width: 300px;
   margin: auto;
 }
 
