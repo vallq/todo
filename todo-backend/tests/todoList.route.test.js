@@ -71,7 +71,7 @@ describe("Todo List", () => {
 
     it("POST should return status 201 and data of new todo item created", async () => {
       const expectedTodoItem = {
-        id: "754aece9-64bf-42ab-b91c-bb65e2db3a55",
+        id: "754aece9-64bf-42ab-b91c-bb65e2db3a09",
         value: "get some stamps",
         completed: false,
       };
