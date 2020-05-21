@@ -38,9 +38,7 @@ const deleteTodoItem = async (req, res) => {
   const deletedItem = await TodoItem.findOneAndDelete({ id: todoItemId });
   res.status(200).send(deletedItem);
 };
-
 const clearCompletedTodoItems = async (req, res) => {
-  const filterCompleted = { completed: true };
   const deleteManyResponse = await TodoItem.deleteMany({ completed: true });
   res.status(200).send(deleteManyResponse);
 };
